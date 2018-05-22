@@ -1,0 +1,51 @@
+<html>
+    <body>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+      <script src="/brain.js"></script>
+      <script>
+        let caroline = new Caroline();
+        annyang.addCallback('result', Caroline.hear.bind(caroline));
+        annyang.start();
+        caroline.addTrait("get time", () => {
+          let time = new Date();
+          caroline.speak("The time right now is " + ((time.getHours() % 12) || 12) + " " + time.getMinutes() +".");
+        })
+        let entNumbers = (numbers, cb) => {
+          if(!(numbers instanceof Array)) return [0];
+          return numbers.map((e) => e.value);
+        }
+
+        caroline.addTrait({
+          intent: "calculate",
+          phrase: /\d+ minus \d+/i
+        }, (entities, intent, phrase) => {
+          caroline.speak("The answer I got was: " + entNumbers(entities.number).reduce((p,c) => p - Math.abs(c)))
+        })
+
+        caroline.addTrait({
+          intent: "calculate",
+          phrase: /\d+ plus \d+/i
+        }, (entities, intent, phrase) => {
+          caroline.speak("The answer I got was: " + entNumbers(entities.number).reduce((p,c) => p + c))
+        })
+
+        caroline.addTrait({
+          intent: "calculate",
+          phrase: /\d+ divided by \d+/i
+        }, (entities, intent, phrase) => {
+          caroline.speak("The answer I got was: " + entNumbers(entities.number).reduce((p,c) => (p * 1.0) / c))
+        })
+
+        caroline.addTrait({
+          intent: /(calculate)|(get time)/, //often confused for "times"!
+          phrase: /\d+ times \d+/i
+        }, (entities, intent, phrase) => {
+          caroline.speak("The answer I got was: " + entNumbers(entities.number).reduce((p,c) => p * c))
+        })
+
+        caroline.addTrait("weather", (entities) => {
+          caroline.speak("Sunny, with a chance of apocalypse.");
+        })
+      </script>
+    </body>
+</html>

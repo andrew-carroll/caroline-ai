@@ -1,0 +1,17 @@
+{
+  "name": "caroline-ai",
+  "version": "0.0.3",
+  "description": "Programmable voice-capable AI assistant",
+  "main": "index.js",
+  "author": "Andrew Carroll <me@andrewcarroll.io>",
+  "license": "MIT",
+  "dependencies": {
+    "apicache": "^1.2.1",
+    "express": "^4.16.3",
+    "request": "^2.87.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {}
+}
